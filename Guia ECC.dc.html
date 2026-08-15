@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <style>
+    @keyframes eccFade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+    body{margin:0;padding:0;-webkit-font-smoothing:antialiased;}
+    ::-webkit-scrollbar{width:10px;height:10px;}
+    ::-webkit-scrollbar-track{background:#0b0b0d;}
+    ::-webkit-scrollbar-thumb{background:#2a2a2f;border-radius:5px;}
+    ::selection{background:rgba(226,112,58,0.35);}
+  </style>
+  <script src="./ecc-data.js"></script>
+</helmet>
+
+<div style="min-height:100vh;background:#0b0b0d;color:#e7e6e3;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;--bg:#0b0b0d;--bg-elev:#131316;--bg-elev2:#18181c;--border:#26262b;--border-soft:#1d1d21;--text:#e7e6e3;--text-dim:#9a9a9f;--text-faint:#6b6b70;--accent:#e2703a;--accent-soft:color-mix(in srgb, var(--accent) 14%, transparent);--accent-border:color-mix(in srgb, var(--accent) 45%, transparent);--green:#6fbf73;--blue:#6a9fd8;--mono:ui-monospace,SFMono-Regular,'SF Mono',Consolas,'Liberation Mono',Menlo,monospace;">
+
+  <a href="#main" style="position:absolute;left:-9999px;">Pular para o conteúdo</a>
+
+  <header style="position:sticky;top:0;z-index:20;background:rgba(11,11,13,0.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);">
+    <div style="max-width:1240px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:30px;height:30px;border:1.5px solid var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--accent);font-family:var(--mono);font-weight:700;font-size:13px;">E</div>
+        <div>
+          <strong style="font-size:15px;letter-spacing:0.2px;display:block;">Guia ECC</strong>
+          <div style="font-size:11px;color:var(--text-faint);letter-spacing:1.5px;text-transform:uppercase;">Referência não oficial</div>
+        </div>
+      </div>
+      <nav style="display:flex;gap:4px;flex-wrap:wrap;">
+        <button style="{{ navBtnStyle.inicio }}" style-hover="{{ navBtnHover }}" onClick="{{ goInicio }}">Início</button>
+        <button style="{{ navBtnStyle.config }}" style-hover="{{ navBtnHover }}" onClick="{{ goConfig }}">Config</button>
+        <button style="{{ navBtnStyle.comandos }}" style-hover="{{ navBtnHover }}" onClick="{{ goComandos }}">Comandos <span style="opacity:.5">({{ counts.commands }})</span></button>
+        <button style="{{ navBtnStyle.agentes }}" style-hover="{{ navBtnHover }}" onClick="{{ goAgentes }}">Agentes <span style="opacity:.5">({{ counts.agents }})</span></button>
+        <button style="{{ navBtnStyle.skills }}" style-hover="{{ navBtnHover }}" onClick="{{ goSkills }}">Skills <span style="opacity:.5">({{ counts.skills }})</span></button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" style="max-width:1240px;margin:0 auto;padding:32px 24px 80px;">
+
+    <!-- ===================== INÍCIO ===================== -->
+    <sc-if value="{{ isInicio }}" hint-placeholder-val="{{ true }}">
+    <div style="animation:eccFade .25s ease;">
+      <h1 style="font-size:28px;font-weight:650;margin:0 0 6px;letter-spacing:-0.3px;">Guia ECC</h1>
+      <p style="color:var(--text-dim);font-size:14.5px;margin:0 0 30px;max-width:760px;">Referência prática montada em cima do repositório <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">affaan-m/ECC</code>, plugin <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">ecc@ecc</code> v2.2.0: o que é, o fluxo de trabalho do dia a dia, e o catálogo completo de comandos, agentes e skills.</p>
+
+      <section style="margin-bottom:16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;">
+        <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:16px 18px;">
+          <div style="font-family:var(--mono);font-size:26px;color:var(--accent);font-weight:700;">68</div>
+          <div style="font-size:12.5px;color:var(--text-dim);margin-top:2px;">Agentes especializados</div>
+        </div>
+        <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:16px 18px;">
+          <div style="font-family:var(--mono);font-size:26px;color:var(--accent);font-weight:700;">284</div>
+          <div style="font-size:12.5px;color:var(--text-dim);margin-top:2px;">Skills sob demanda</div>
+        </div>
+        <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:16px 18px;">
+          <div style="font-family:var(--mono);font-size:26px;color:var(--accent);font-weight:700;">94</div>
+          <div style="font-size:12.5px;color:var(--text-dim);margin-top:2px;">Comandos de entrada</div>
+        </div>
+        <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:16px 18px;">
+          <div style="font-family:var(--mono);font-size:26px;color:var(--accent);font-weight:700;">8+</div>
+          <div style="font-size:12.5px;color:var(--text-dim);margin-top:2px;">Harnesses suportados</div>
+        </div>
+      </section>
+
+      <section style="margin-bottom:38px;">
+        <h2 style="font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin:26px 0 14px;font-weight:700;">O que é o ECC</h2>
+        <p style="color:#c7c6c3;margin:0 0 10px;">ECC não é um app separado, é um conjunto de agentes, skills, comandos, regras e hooks que roda dentro de harnesses como Claude Code, Codex, Cursor ou OpenCode. Em vez de reexplicar "planeje antes de codar" ou "escreva testes primeiro" em todo prompt, você instala isso uma vez e esses hábitos passam a fazer parte de como o agente trabalha.</p>
+        <div style="display:flex;align-items:stretch;gap:0;flex-wrap:wrap;margin:18px 0 6px;">
+          <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:6px;padding:12px 14px;min-width:140px;flex:1;"><span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-faint);margin-bottom:4px;display:block;">1</span>plan</div>
+          <div style="display:flex;align-items:center;justify-content:center;color:var(--text-faint);padding:0 8px;font-size:16px;">→</div>
+          <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:6px;padding:12px 14px;min-width:140px;flex:1;"><span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-faint);margin-bottom:4px;display:block;">2</span>test</div>
+          <div style="display:flex;align-items:center;justify-content:center;color:var(--text-faint);padding:0 8px;font-size:16px;">→</div>
+          <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:6px;padding:12px 14px;min-width:140px;flex:1;"><span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-faint);margin-bottom:4px;display:block;">3</span>implement</div>
+          <div style="display:flex;align-items:center;justify-content:center;color:var(--text-faint);padding:0 8px;font-size:16px;">→</div>
+          <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:6px;padding:12px 14px;min-width:140px;flex:1;"><span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-faint);margin-bottom:4px;display:block;">4</span>review</div>
+          <div style="display:flex;align-items:center;justify-content:center;color:var(--text-faint);padding:0 8px;font-size:16px;">→</div>
+          <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:6px;padding:12px 14px;min-width:140px;flex:1;"><span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-faint);margin-bottom:4px;display:block;">5</span>verify</div>
+          <div style="display:flex;align-items:center;justify-content:center;color:var(--text-faint);padding:0 8px;font-size:16px;">→</div>
+          <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:6px;padding:12px 14px;min-width:140px;flex:1;"><span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-faint);margin-bottom:4px;display:block;">6</span>remember</div>
+        </div>
+      </section>
+
+      <section style="margin-bottom:38px;">
+        <h2 style="font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin:0 0 14px;font-weight:700;">Como começar em um projeto novo</h2>
+        <p style="color:#c7c6c3;margin:0 0 14px;font-size:13.5px;">Passo a passo resumido — a aba <a href="#" onClick="{{ goConfig }}" style="color:var(--accent);">Config</a> tem o detalhe completo por harness.</p>
+
+        <div style="display:flex;gap:14px;background:var(--bg-elev);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:6px;padding:16px 18px;margin-bottom:12px;">
+          <div style="font-family:var(--mono);color:var(--accent);font-weight:700;font-size:13px;min-width:22px;">01</div>
+          <div>
+            <strong style="display:block;margin-bottom:3px;font-size:14.5px;"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/plugin marketplace add https://github.com/affaan-m/ECC</code> e <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/plugin install ecc@ecc</code> <span style="display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-left:6px;vertical-align:1px;background:rgba(106,159,216,0.14);color:var(--blue);border:1px solid rgba(106,159,216,0.35);">Claude Code nativo</span></strong>
+            <span style="color:var(--text-dim);font-size:13.5px;">Instala o plugin inteiro (68 agentes, 284 skills, 94 comandos). Uma vez por máquina/usuário, não por projeto. Confirme com <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/plugin list ecc@ecc</code>.</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:14px;background:var(--bg-elev);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:6px;padding:16px 18px;margin-bottom:12px;">
+          <div style="font-family:var(--mono);color:var(--accent);font-weight:700;font-size:13px;min-width:22px;">02</div>
+          <div>
+            <strong style="display:block;margin-bottom:3px;font-size:14.5px;">Instalar as <em>rules</em> da sua stack (manual) <span style="display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-left:6px;vertical-align:1px;background:rgba(226,112,58,0.16);color:var(--accent);border:1px solid rgba(226,112,58,0.35);">ECC</span></strong>
+            <span style="color:var(--text-dim);font-size:13.5px;">Plugins não distribuem <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">rules/</code>. Copie <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">rules/common</code> + a pasta da sua linguagem para <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">~/.claude/rules/ecc/</code>.</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:14px;background:var(--bg-elev);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:6px;padding:16px 18px;margin-bottom:12px;">
+          <div style="font-family:var(--mono);color:var(--accent);font-weight:700;font-size:13px;min-width:22px;">03</div>
+          <div>
+            <strong style="display:block;margin-bottom:3px;font-size:14.5px;"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/ecc:project-init</code> <span style="display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-left:6px;vertical-align:1px;background:rgba(226,112,58,0.16);color:var(--accent);border:1px solid rgba(226,112,58,0.35);">ECC</span></strong>
+            <span style="color:var(--text-dim);font-size:13.5px;">Detecta a stack do projeto e devolve um plano dry-run do que instalar/ativar: quais rules, skills e agentes combinam.</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:14px;background:var(--bg-elev);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:6px;padding:16px 18px;margin-bottom:0;">
+          <div style="font-family:var(--mono);color:var(--accent);font-weight:700;font-size:13px;min-width:22px;">04</div>
+          <div>
+            <strong style="display:block;margin-bottom:3px;font-size:14.5px;"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">npx -y ecc-agentshield scan --path .</code> <span style="display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;padding:2px 7px;border-radius:4px;margin-left:6px;vertical-align:1px;background:rgba(226,112,58,0.16);color:var(--accent);border:1px solid rgba(226,112,58,0.35);">ECC</span></strong>
+            <span style="color:var(--text-dim);font-size:13.5px;">Baseline de segurança: segredos vazados, permissões abertas, risco em hooks e MCPs.</span>
+          </div>
+        </div>
+      </section>
+
+      <section style="margin-bottom:38px;">
+        <h2 style="font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin:0 0 14px;font-weight:700;">Fluxo de uso recomendado (dia a dia)</h2>
+        <p style="color:#c7c6c3;margin:0 0 10px;">Ciclo por tarefa, se repete a cada feature ou bug corrigido:</p>
+        <div style="display:flex;align-items:stretch;gap:0;flex-wrap:wrap;margin:18px 0 20px;">
+          <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:6px;padding:12px 14px;min-width:160px;flex:1;"><span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-faint);margin-bottom:4px;display:block;">Planejar</span><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/ecc:plan "..."</code></div>
+          <div style="display:flex;align-items:center;justify-content:center;color:var(--text-faint);padding:0 8px;font-size:16px;">→</div>
+          <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:6px;padding:12px 14px;min-width:160px;flex:1;"><span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-faint);margin-bottom:4px;display:block;">Confirmar</span>revisar o plano</div>
+          <div style="display:flex;align-items:center;justify-content:center;color:var(--text-faint);padding:0 8px;font-size:16px;">→</div>
+          <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:6px;padding:12px 14px;min-width:160px;flex:1;"><span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-faint);margin-bottom:4px;display:block;">Implementar</span>TDD guiado</div>
+          <div style="display:flex;align-items:center;justify-content:center;color:var(--text-faint);padding:0 8px;font-size:16px;">→</div>
+          <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:6px;padding:12px 14px;min-width:160px;flex:1;"><span style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text-faint);margin-bottom:4px;display:block;">Revisar</span><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/ecc:code-review</code></div>
+        </div>
+
+        <h3 style="font-size:17px;margin:22px 0 8px;color:var(--text);">Comandos ECC que entram no ciclo</h3>
+        <table style="width:100%;border-collapse:collapse;margin:10px 0 6px;font-size:13.8px;">
+          <tr><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Quando</th><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Comando</th><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Para quê</th></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Antes de codar</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/ecc:plan "descrição"</code></td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Plano estruturado com gate de confirmação antes de tocar em código</td></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Durante a implementação</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);">skill <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">tdd-workflow</code></td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">RED → GREEN → REFACTOR</td></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Depois de implementar</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/ecc:code-review</code></td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Revisão com contexto novo e rules do projeto</td></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Build quebrado</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/build-fix</code></td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Aciona o build-error-resolver</td></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Sessão ficando pesada</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/ecc:context-budget</code></td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Checagem de saúde do contexto</td></tr>
+          <tr><td style="padding:9px 10px;color:#c7c6c3;">Fim de sessão / retomar</td><td style="padding:9px 10px;"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/save-session</code>, <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/resume-session</code></td><td style="padding:9px 10px;color:#c7c6c3;">Persiste e recarrega o contexto da sessão</td></tr>
+        </table>
+
+        <h3 style="font-size:17px;margin:22px 0 8px;color:var(--text);">Outros harnesses — paridade parcial</h3>
+        <table style="width:100%;border-collapse:collapse;margin:10px 0 6px;font-size:13.8px;">
+          <tr><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Harness</th><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Limitação principal</th></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Codex</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Sem runtime de hooks; usa <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">AGENTS.md</code> como instrução</td></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Cursor</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">20 eventos de hook adaptados a partir dos 8 do Claude Code</td></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">OpenCode</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Catálogo é um subconjunto do total</td></tr>
+          <tr><td style="padding:9px 10px;color:#c7c6c3;">GitHub Copilot</td><td style="padding:9px 10px;color:#c7c6c3;">Só instrução, sem hooks, sem agentes</td></tr>
+        </table>
+      </section>
+
+      <section>
+        <h2 style="font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin:0 0 14px;font-weight:700;">Variáveis de ambiente úteis</h2>
+        <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">export ECC_HOOK_PROFILE=standard        # minimal | standard | strict
+export ECC_DISABLED_HOOKS="pre:bash:tmux-reminder,post:edit:typecheck"
+export ECC_SESSION_START_MAX_CHARS=4000  # limite de contexto injetado no início da sessão
+export ECC_DISABLED_MCPS="chrome-devtools"</pre>
+        <p style="color:var(--text-faint);font-size:13px;">Fonte: README.md do repositório ECC. Este guia é referência de apoio, não substitui o README oficial em caso de divergência.</p>
+      </section>
+    </div>
+    </sc-if>
+
+    <!-- ===================== CONFIG ===================== -->
+    <sc-if value="{{ isConfig }}" hint-placeholder-val="{{ false }}">
+    <div style="animation:eccFade .25s ease;">
+      <h1 style="font-size:28px;font-weight:650;margin:0 0 6px;letter-spacing:-0.3px;">Config</h1>
+      <p style="color:var(--text-dim);font-size:14.5px;margin:0 0 24px;max-width:760px;">Como instalar o ECC do zero em cada harness, e como configurar depois: rules, perfis de hooks, MCPs, memória e otimização de custo.</p>
+
+      <div style="display:flex;gap:6px;margin-bottom:26px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:4px;width:fit-content;">
+        <button style="{{ subTabStyle.install }}" onClick="{{ goInstall }}">Instalação inicial</button>
+        <button style="{{ subTabStyle.post }}" onClick="{{ goPost }}">Depois de instalar</button>
+        <button style="{{ subTabStyle.separado }}" onClick="{{ goSeparado }}">Ambiente separado</button>
+      </div>
+
+      <!-- ---- Instalação inicial ---- -->
+      <sc-if value="{{ isInstallSub }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:22px;">
+          <sc-for list="{{ harnesses }}" as="h" hint-placeholder-count="6">
+            <span style="{{ h.chipStyle }}" onClick="{{ h.select }}">{{ h.label }}</span>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ isHarnessClaude }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <h3 style="font-size:17px;margin:0 0 8px;color:var(--text);">Claude Code — caminho recomendado (plugin)</h3>
+          <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">/plugin marketplace add https://github.com/affaan-m/ECC
+/plugin install ecc@ecc</pre>
+          <p style="color:#c7c6c3;margin:0 0 10px;">Instala skills, agents, commands e hooks de uma vez. <strong>Não rode depois</strong> um install manual completo por cima — misturar os dois caminhos duplica hooks/comandos.</p>
+          <p style="color:#c7c6c3;margin:0 0 6px;">Confirmar a instalação:</p>
+          <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">/plugin list ecc@ecc</pre>
+          <p style="color:#c7c6c3;margin:14px 0 6px;">Alternativa declarativa, direto no <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">~/.claude/settings.json</code>:</p>
+          <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">{
+  "extraKnownMarketplaces": {
+    "ecc": { "source": { "source": "github", "repo": "affaan-m/ECC" } }
+  },
+  "enabledPlugins": { "ecc@ecc": true }
+}</pre>
+          <p style="color:var(--text-faint);font-size:13px;margin:14px 0 0;">Requisito: Claude Code CLI v2.1.0 ou mais recente (<code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">claude --version</code>). Versões antigas têm bug de "Duplicate hooks file detected".</p>
+
+          <h3 style="font-size:17px;margin:26px 0 8px;color:var(--text);">Claude Code — caminho alternativo (instalação manual completa)</h3>
+          <p style="color:#c7c6c3;margin:0 0 10px;">Só usar quando <strong>intencionalmente</strong> não for usar o caminho de plugin:</p>
+          <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">git clone https://github.com/affaan-m/ECC.git
+cd ECC
+./install.sh --profile full</pre>
+          <p style="color:#c7c6c3;margin:10px 0 6px;">Windows:</p>
+          <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">git clone https://github.com/affaan-m/ECC.git
+cd ECC
+.\install.ps1 --profile full</pre>
+          <p style="color:#c7c6c3;margin:10px 0 0;">Se escolher esse caminho, <strong>não rode</strong> <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/plugin install</code> depois. Perfis parciais: <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">--profile minimal</code> (sem hooks), <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">--profile core</code> (básico), ou seleção explícita:</p>
+          <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;margin-top:10px;">./install.sh --target claude --skills tdd-workflow,security-review
+node scripts/ecc.js consult "security reviews" --target claude</pre>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isHarnessCodex }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <h3 style="font-size:17px;margin:0 0 8px;color:var(--text);">Codex (macOS app + CLI)</h3>
+          <p style="color:#c7c6c3;margin:0 0 6px;">Caminho nativo (marketplace, ainda experimental):</p>
+          <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">codex plugin marketplace add affaan-m/ECC
+codex plugin add ecc@ecc
+codex plugin list --json
+node scripts/codex/check-plugin-cache.js</pre>
+          <p style="color:#c7c6c3;margin:14px 0 6px;">Caminho de sync (mais confiável hoje, recomendado):</p>
+          <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">git clone https://github.com/affaan-m/ECC.git
+cd ECC
+npm install
+bash scripts/sync-ecc-to-codex.sh</pre>
+          <p style="color:#c7c6c3;margin:10px 0 0;">O script mescla os servidores MCP do ECC no <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">~/.codex/config.toml</code> de forma <em>add-only</em>. Use <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">--dry-run</code> para simular, ou <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">--update-mcp</code> para atualizar.</p>
+          <p style="color:var(--text-faint);font-size:13px;margin:14px 0 0;">Codex não tem hooks no mesmo nível do Claude Code; enforcement via <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">AGENTS.md</code> (raiz) + <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">.codex/AGENTS.md</code> (suplemento).</p>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isHarnessCursor }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <h3 style="font-size:17px;margin:0 0 8px;color:var(--text);">Cursor</h3>
+          <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">./install.sh --profile minimal --target cursor typescript
+./install.sh --profile minimal --target cursor python golang swift php</pre>
+          <p style="color:#c7c6c3;margin:14px 0 6px;">Windows:</p>
+          <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">.\install.ps1 --target cursor typescript</pre>
+          <p style="color:#c7c6c3;margin:14px 0 0;">Traz 34 rules (9 comuns + 25 por linguagem), 48 agentes prefixados <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">.cursor/agents/ecc-*.md</code>, hooks adaptados (Cursor tem 20 tipos de evento contra 8 do Claude Code, via <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">.cursor/hooks/adapter.js</code>). Não instala <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">AGENTS.md</code> raiz dentro de <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">.cursor/</code>.</p>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isHarnessOpencode }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <h3 style="font-size:17px;margin:0 0 8px;color:var(--text);">OpenCode</h3>
+          <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">npm install -g opencode
+cd ECC
+opencode   # config detectada automaticamente de .opencode/opencode.json</pre>
+          <p style="color:#c7c6c3;margin:14px 0 6px;">Como plugin npm num projeto próprio (só hooks/eventos, não o catálogo completo):</p>
+          <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">npm install ecc-universal</pre>
+          <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;margin-top:10px;">{ "plugin": ["ecc-universal"] }</pre>
+          <p style="color:#c7c6c3;margin:14px 0 0;">Para o catálogo completo, rode o OpenCode dentro do próprio repositório ECC, ou copie os assets de <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">.opencode/</code> e configure <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">instructions</code>, <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">agent</code> e <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">command</code> em <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">opencode.json</code>.</p>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isHarnessCopilot }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <h3 style="font-size:17px;margin:0 0 8px;color:var(--text);">GitHub Copilot (VS Code)</h3>
+          <p style="color:#c7c6c3;margin:0 0 10px;">Não precisa de instalação, os arquivos já vêm prontos no repositório: <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">.github/copilot-instructions.md</code> (instruções sempre carregadas) e <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">.github/prompts/*.prompt.md</code> (plan, tdd, security-review, build-fix, refactor). Basta abrir um repositório com esses arquivos e Copilot Chat ativo.</p>
+          <p style="color:var(--text-faint);font-size:13px;">Sem hooks, sem agentes, sem delegação — Copilot não tem essas APIs.</p>
+
+          <h3 style="font-size:17px;margin:26px 0 8px;color:var(--text);">Zed</h3>
+          <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">./install.sh --profile minimal --target zed</pre>
+          <p style="color:#c7c6c3;margin:10px 0 0;">Adapter conservador, project-local, escreve arquivos sob <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">.zed/</code>. Chaves de API continuam configuradas pela própria UI do Zed.</p>
+        </div>
+        </sc-if>
+
+        <sc-if value="{{ isHarnessOthers }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <h3 style="font-size:17px;margin:0 0 8px;color:var(--text);">Outros harnesses (adapters seletivos)</h3>
+          <table style="width:100%;border-collapse:collapse;margin:10px 0 6px;font-size:13.8px;">
+            <tr><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Harness</th><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Comando</th></tr>
+            <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Gemini CLI</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">./install.sh --profile minimal --target gemini</code></td></tr>
+            <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Antigravity</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">./install.sh --profile minimal --target antigravity</code></td></tr>
+            <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Qwen CLI</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">./install.sh --profile minimal --target qwen</code></td></tr>
+            <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Hermes</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">./install.sh --profile minimal --target hermes</code></td></tr>
+            <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">OpenClaw</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">./install.sh --profile minimal --target openclaw</code></td></tr>
+            <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Kimi Code CLI</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">./install.sh --target kimi --profile minimal</code></td></tr>
+            <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">CodeBuddy</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">./install.sh --profile minimal --target codebuddy</code></td></tr>
+            <tr><td style="padding:9px 10px;color:#c7c6c3;">JoyCode</td><td style="padding:9px 10px;"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">./install.sh --profile minimal --target joycode</code></td></tr>
+          </table>
+        </div>
+        </sc-if>
+      </div>
+      </sc-if>
+
+      <!-- ---- Depois de instalar ---- -->
+      <sc-if value="{{ isPostSub }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <h3 style="font-size:17px;margin:0 0 8px;color:var(--text);">Instalar as rules da sua stack</h3>
+        <p style="color:#c7c6c3;margin:0 0 10px;">Plugins do Claude Code não trazem <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">rules/</code>. Copie manualmente <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">rules/common</code> (sempre) + a pasta da linguagem usada:</p>
+        <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">git clone https://github.com/affaan-m/ECC.git
+cd ECC
+mkdir -p ~/.claude/rules/ecc
+cp -R rules/common ~/.claude/rules/ecc/
+cp -R rules/python ~/.claude/rules/ecc/   # trocar pela sua stack</pre>
+        <p style="color:var(--text-faint);font-size:13px;margin:10px 0 0;">Disponíveis: common, typescript, python, golang, swift, php, arkts. Para rules por projeto, copie para <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">.claude/rules/ecc/</code> dentro do repositório do projeto.</p>
+
+        <h3 style="font-size:17px;margin:28px 0 8px;color:var(--text);">Descobrir o que instalar para um projeto específico</h3>
+        <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">node scripts/ecc.js consult "security reviews" --target claude</pre>
+        <p style="color:#c7c6c3;margin:10px 0 0;">Ou, dentro do Claude Code, o comando <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/ecc:project-init</code>: detecta a stack e devolve plano dry-run cruzando com os manifests do ECC.</p>
+
+        <h3 style="font-size:17px;margin:28px 0 8px;color:var(--text);">Gerenciador de pacotes (npm / pnpm / yarn / bun)</h3>
+        <p style="color:#c7c6c3;margin:0 0 10px;">Detecção automática, em ordem: <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">CLAUDE_PACKAGE_MANAGER</code>, <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">.claude/package-manager.json</code> do projeto, campo <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">packageManager</code> do package.json, lockfile, config global, e por fim o primeiro disponível.</p>
+        <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">export CLAUDE_PACKAGE_MANAGER=pnpm
+node scripts/setup-package-manager.js --global pnpm
+node scripts/setup-package-manager.js --project bun
+node scripts/setup-package-manager.js --detect</pre>
+        <p style="color:var(--text-faint);font-size:13px;margin:10px 0 0;">Ou use <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/setup-pm</code> dentro do Claude Code.</p>
+
+        <h3 style="font-size:17px;margin:28px 0 8px;color:var(--text);">Perfil de hooks e variáveis de ambiente</h3>
+        <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">export ECC_HOOK_PROFILE=standard          # minimal | standard | strict
+export ECC_DISABLED_HOOKS="pre:bash:tmux-reminder,post:edit:typecheck"
+export ECC_SESSION_START_MAX_CHARS=4000    # padrão: 8000 caracteres
+export ECC_SESSION_START_CONTEXT=off       # desliga contexto extra no início da sessão
+export ECC_SESSION_RETENTION_DAYS=14       # padrão: 30 dias; 0/off/never mantém tudo
+export ECC_MAX_INJECTED_INSTINCTS=6        # instincts aprendidos injetados por sessão
+export ECC_INSTINCT_CONFIDENCE_THRESHOLD=0.7
+export ECC_CONTEXT_MONITOR_COST_WARNINGS=off  # mantém avisos de contexto/loop, remove estimativa de custo</pre>
+        <p style="color:#c7c6c3;margin:14px 0 6px;">Windows PowerShell:</p>
+        <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">[Environment]::SetEnvironmentVariable('ECC_CONTEXT_MONITOR_COST_WARNINGS', 'off', 'User')
+[Environment]::SetEnvironmentVariable('ECC_SESSION_RETENTION_DAYS', '14', 'User')</pre>
+        <p style="color:#c7c6c3;margin:14px 0 6px;">Isolamento de dados entre harnesses na mesma máquina:</p>
+        <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">export ECC_AGENT_DATA_HOME="$HOME/.cursor/ecc"   # Claude Code mantém o padrão ~/.claude</pre>
+
+        <h3 style="font-size:17px;margin:28px 0 8px;color:var(--text);">Configurar MCPs</h3>
+        <p style="color:#c7c6c3;margin:0 0 10px;">Instalações via plugin <strong>não</strong> ativam automaticamente os servidores MCP do ECC. Use <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/mcp</code> dentro do Claude Code para ativar/desativar em tempo real, ou copie entradas de <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">mcp-configs/mcp-servers.json</code> para um <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">.mcp.json</code> do projeto. O ECC empacota só um conector por padrão (<code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">chrome-devtools</code>).</p>
+        <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">export ECC_DISABLED_MCPS="chrome-devtools"   # filtro usado só durante install/sync, não runtime</pre>
+        <p style="color:var(--text-faint);font-size:13px;margin:10px 0 0;">Regra geral: menos de 10 MCPs ativos e menos de 80 tools ativas por projeto.</p>
+
+        <h3 style="font-size:17px;margin:28px 0 8px;color:var(--text);">Otimização de tokens (custo)</h3>
+        <p style="color:#c7c6c3;margin:0 0 10px;">Adicionar a <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">~/.claude/settings.json</code>:</p>
+        <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">{
+  "model": "sonnet",
+  "env": {
+    "MAX_THINKING_TOKENS": "10000",
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "haiku"
+  }
+}</pre>
+        <table style="width:100%;border-collapse:collapse;margin:14px 0 6px;font-size:13.8px;">
+          <tr><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Ajuste</th><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Padrão</th><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Recomendado</th><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Efeito</th></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">model</code></td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">opus</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">sonnet</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">~60% menos custo; cobre 80%+ das tarefas</td></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">MAX_THINKING_TOKENS</code></td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">31.999</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">10.000</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">~70% menos custo de raciocínio oculto</td></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">CLAUDE_AUTOCOMPACT_PCT_OVERRIDE</code></td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">95</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">50</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Compacta mais cedo, melhor em sessões longas</td></tr>
+          <tr><td style="padding:9px 10px;"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">ECC_CONTEXT_MONITOR_COST_WARNINGS</code></td><td style="padding:9px 10px;color:#c7c6c3;">on</td><td style="padding:9px 10px;color:#c7c6c3;">off (assinantes)</td><td style="padding:9px 10px;color:#c7c6c3;">Remove estimativa de custo de API</td></tr>
+        </table>
+        <p style="color:var(--text-faint);font-size:13px;margin:10px 0 0;">Dia a dia: <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/model sonnet</code>, <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/clear</code>, <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/compact</code>, <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/cost</code>, <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/ecc:context-budget</code>. Regra geral: menos de 10 MCPs ativos e menos de 80 tools por projeto.</p>
+
+        <h3 style="font-size:17px;margin:28px 0 8px;color:var(--text);">Memory Vault (contexto entre sessões/harnesses)</h3>
+        <p style="color:#c7c6c3;margin:0 0 10px;">Instalações via plugin não trazem o runtime da CLI de memória. Instalar uma vez, globalmente:</p>
+        <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">npm install -g ecc-universal
+ecc memory init --scope project
+ecc memory search "termo" --target-harness codex
+ecc memory read &lt;memory-id&gt;
+ecc memory doctor</pre>
+        <p style="color:var(--text-faint);font-size:13px;margin:10px 0 0;">Dentro do Claude Code, <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/ecc:unified-memory</code> guia o mesmo fluxo. Memórias em Markdown em <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">.ecc/memory/</code> (projeto) ou <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">~/.ecc/memory/</code> (usuário) — contexto não revisado, sempre verificar contra a fonte real.</p>
+
+        <h3 style="font-size:17px;margin:28px 0 8px;color:var(--text);">Segurança: baseline com AgentShield</h3>
+        <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">npx -y ecc-agentshield scan --path .        # varredura rápida
+npx ecc-agentshield scan --fix              # corrige automaticamente o que for seguro
+npx ecc-agentshield scan --opus --stream    # análise profunda (red team / blue team / auditor)
+npx ecc-agentshield init                    # gera config segura do zero</pre>
+        <p style="color:#c7c6c3;margin:10px 0 0;">Ou <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/security-scan</code> dentro do Claude Code. Roda uma vez como baseline e de novo sempre que adicionar um MCP ou hook novo.</p>
+
+        <h3 style="font-size:17px;margin:28px 0 8px;color:var(--text);">Reset, reparo e desinstalação</h3>
+        <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;">node scripts/ecc.js list-installed
+node scripts/ecc.js doctor            # só detecta instalações via install.sh/ecc-universal
+node scripts/ecc.js repair
+node scripts/ecc.js uninstall --dry-run
+node scripts/uninstall.js --dry-run   # caminho direto alternativo</pre>
+        <p style="color:var(--text-faint);font-size:13px;margin:10px 0 0;">Se instalado via plugin, use <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/plugin list ecc@ecc</code> para verificar saúde, não <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">node scripts/ecc.js doctor</code> (só enxerga instalações manuais). Se ECC aparecer duplicado: remova o plugin, rode o uninstall dry-run, remova rules copiadas manualmente que não quiser mais, e reinstale usando um único caminho.</p>
+      </div>
+      </sc-if>
+
+      <!-- ---- Ambiente separado ---- -->
+      <sc-if value="{{ isSeparadoSub }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <p style="color:#c7c6c3;margin:0 0 20px;">Por padrão, alguns harnesses do ECC instalam na pasta do usuário (<code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">~</code>, vale pra toda sessão e todo projeto), e outros já instalam sempre dentro do projeto atual. Isso importa para quem já usa o ECC global num harness (ex: Claude Code) e quer testar outro harness ou uma configuração diferente sem arriscar bagunçar o que já funciona.</p>
+
+        <h3 style="font-size:17px;margin:0 0 8px;color:var(--text);">Quem já é project-local por padrão</h3>
+        <p style="color:#c7c6c3;margin:0 0 10px;">Confirmado direto no instalador (<code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">scripts/install-apply.js</code>), os alvos se dividem em dois grupos:</p>
+        <table style="width:100%;border-collapse:collapse;margin:10px 0 6px;font-size:13.8px;">
+          <tr><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Grupo</th><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Harnesses</th><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Comportamento</th></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Já é project-local (não existe versão global)</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Cursor, Antigravity, Gemini, CodeBuddy, JoyCode, Zed, Kimi Code</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Instala sempre dentro de <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">./.cursor/</code>, <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">./.gemini/</code> etc — nada a configurar</td></tr>
+          <tr><td style="padding:9px 10px;color:#c7c6c3;">Instala global por padrão, precisa pedir para isolar</td><td style="padding:9px 10px;color:#c7c6c3;">Claude Code, Codex, OpenCode, Qwen, Hermes, OpenClaw</td><td style="padding:9px 10px;color:#c7c6c3;">Sem flag extra, grava em <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">~/.claude/</code>, <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">~/.codex/</code>, <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">~/.opencode/</code> etc</td></tr>
+        </table>
+
+        <h3 style="font-size:17px;margin:26px 0 8px;color:var(--text);">Isolar Claude Code por projeto</h3>
+        <p style="color:#c7c6c3;margin:0 0 10px;">Duas situações diferentes, escolha uma:</p>
+
+        <div style="display:flex;gap:14px;background:var(--bg-elev);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:6px;padding:16px 18px;margin-bottom:14px;">
+          <div style="font-family:var(--mono);color:var(--accent);font-weight:700;font-size:13px;min-width:22px;">a</div>
+          <div>
+            <strong style="display:block;margin-bottom:6px;font-size:14.5px;">Você já usa o plugin global e só quer rules específicas do projeto</strong>
+            <span style="color:var(--text-dim);font-size:13.5px;">Caso mais comum. Seguro — rules não fazem parte do que o plugin distribui:</span>
+            <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev2);border:1px solid var(--border-soft);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;margin:10px 0 0;">cd meu-projeto
+mkdir -p .claude/rules/ecc
+cp -R /caminho/para/ECC/rules/common .claude/rules/ecc/
+cp -R /caminho/para/ECC/rules/python .claude/rules/ecc/   # trocar pela stack do projeto</pre>
+            <span style="color:var(--text-faint);font-size:13px;display:block;margin-top:8px;">O Claude Code prioriza rules do projeto sobre rules globais quando ambas existem.</span>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:14px;background:var(--bg-elev);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:6px;padding:16px 18px;margin-bottom:0;">
+          <div style="font-family:var(--mono);color:var(--accent);font-weight:700;font-size:13px;min-width:22px;">b</div>
+          <div>
+            <strong style="display:block;margin-bottom:6px;font-size:14.5px;">Você quer isolar o ECC inteiro (skills, agentes, comandos, rules) num projeto de teste</strong>
+            <span style="color:var(--text-dim);font-size:13.5px;">Sem depender do plugin global. Use o alvo <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">claude-project</code> do instalador manual:</span>
+            <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev2);border:1px solid var(--border-soft);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;margin:10px 0 0;">cd meu-projeto-de-teste
+git clone https://github.com/affaan-m/ECC.git /tmp/ecc-src
+node /tmp/ecc-src/scripts/install-apply.js --target claude-project --profile core</pre>
+            <span style="color:var(--text-faint);font-size:13px;display:block;margin-top:8px;">Grava tudo em <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">./.claude/</code> (rules em <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">rules/ecc</code>, skills soltas em <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">skills/</code>), sem tocar em <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">~/.claude/</code>. <strong>Atenção:</strong> não combine com o plugin <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">ecc@ecc</code> ativo no mesmo projeto — empilhar métodos de instalação duplica skills e comandos.</span>
+          </div>
+        </div>
+
+        <h3 style="font-size:17px;margin:28px 0 8px;color:var(--text);">Testar Codex e OpenCode sem tocar na configuração global</h3>
+        <p style="color:#c7c6c3;margin:0 0 10px;">Ambos suportam rodar "de dentro do próprio repositório", o que evita gravar em <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">~/</code>:</p>
+        <pre style="font-family:var(--mono);font-size:13px;background:var(--bg-elev);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow-x:auto;color:#dcd9d3;line-height:1.6;"># Codex: lê AGENTS.md e .codex/ automaticamente, sem sync para ~/.codex
+cd ECC
+codex
+
+# OpenCode: lê .opencode/opencode.json do próprio repositório
+cd ECC
+opencode</pre>
+        <p style="color:var(--text-faint);font-size:13px;margin:10px 0 0;">Útil para conhecer o comportamento do ECC nesses harnesses antes de decidir sincronizar para a configuração global (<code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">bash scripts/sync-ecc-to-codex.sh</code> para Codex, ou copiar <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">.opencode/</code> para um projeto próprio no caso do OpenCode).</p>
+
+        <h3 style="font-size:17px;margin:28px 0 8px;color:var(--text);">Tabela-resumo por harness</h3>
+        <table style="width:100%;border-collapse:collapse;margin:10px 0 6px;font-size:13.8px;">
+          <tr><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Harness</th><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Instalação global (padrão)</th><th style="text-align:left;color:var(--text-faint);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:6px 10px;border-bottom:1px solid var(--border);">Instalação project-local</th></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Claude Code</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/plugin install ecc@ecc</code> ou <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">./install.sh --target claude</code></td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">node scripts/install-apply.js --target claude-project --profile &lt;nome&gt;</code></td></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Codex</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">bash scripts/sync-ecc-to-codex.sh</code></td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Rodar <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">codex</code> dentro da pasta do repositório ECC</td></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">OpenCode</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">npm install ecc-universal</code> + entrada <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">plugin</code> no <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">opencode.json</code></td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Rodar <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">opencode</code> dentro da pasta do repositório ECC</td></tr>
+          <tr><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:#c7c6c3;">Qwen CLI</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">./install.sh --target qwen</code> (grava em <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">~/.qwen/</code>)</td><td style="padding:9px 10px;border-bottom:1px solid var(--border-soft);color:var(--text-faint);">Não documentado — tratar como instalação por máquina</td></tr>
+          <tr><td style="padding:9px 10px;color:#c7c6c3;">Cursor / Antigravity / Gemini / CodeBuddy / JoyCode / Zed / Kimi</td><td style="padding:9px 10px;color:var(--text-faint);">—</td><td style="padding:9px 10px;color:#c7c6c3;"><code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">./install.sh --target &lt;harness&gt;</code> já grava no projeto atual</td></tr>
+        </table>
+      </div>
+      </sc-if>
+    </div>
+    </sc-if>
+
+    <!-- ===================== COMANDOS ===================== -->
+    <sc-if value="{{ isComandos }}" hint-placeholder-val="{{ false }}">
+    <div style="animation:eccFade .25s ease;">
+      <h1 style="font-size:28px;font-weight:650;margin:0 0 6px;letter-spacing:-0.3px;">Comandos</h1>
+      <p style="color:var(--text-dim);font-size:14.5px;margin:0 0 20px;max-width:760px;">Os {{ counts.commands }} comandos mantidos em <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">commands/</code>, prefixo <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">/ecc:</code> quando instalados via plugin.</p>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px;position:sticky;top:58px;background:var(--bg);padding:10px 0;z-index:10;">
+        <div style="flex:1;min-width:220px;position:relative;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;left:11px;top:50%;transform:translateY(-50%);opacity:0.45;"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" placeholder="Buscar comando (ex: plan, review, security)..." value="{{ qCmd }}" onChange="{{ setQCmd }}" style="width:100%;background:var(--bg-elev);border:1px solid var(--border);color:var(--text);padding:10px 14px 10px 34px;border-radius:6px;font-size:14px;box-sizing:border-box;" />
+        </div>
+        <div style="font-family:var(--mono);font-size:12.5px;color:var(--text-faint);background:var(--bg-elev);border:1px solid var(--border);padding:8px 12px;border-radius:6px;white-space:nowrap;">{{ counts.commandsFiltered }} de {{ counts.commands }}</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
+        <sc-for list="{{ cmdCatChips }}" as="c" hint-placeholder-count="8">
+          <span style="{{ c.chipStyle }}" onClick="{{ c.select }}">{{ c.label }}</span>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <sc-for list="{{ filteredCommands }}" as="c" hint-placeholder-count="10">
+          <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:6px;padding:13px 16px;">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px;">
+              <span style="font-family:var(--mono);font-size:14px;color:var(--accent);font-weight:600;">/ecc:{{ c.slug }}</span>
+              <span style="font-size:10.5px;color:var(--text-faint);border:1px solid var(--border);border-radius:4px;padding:1px 7px;text-transform:uppercase;letter-spacing:0.4px;">{{ c.cat }}</span>
+              <sc-if value="{{ c.hasArg }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px;color:var(--text-faint);font-family:var(--mono);">arg: {{ c.arg }}</span></sc-if>
+            </div>
+            <div style="font-size:13.6px;color:#c2c1be;">{{ c.desc }}</div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ commandsEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="color:var(--text-faint);padding:40px 0;text-align:center;font-size:14px;">Nenhum comando encontrado.</div>
+        </sc-if>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ===================== AGENTES ===================== -->
+    <sc-if value="{{ isAgentes }}" hint-placeholder-val="{{ false }}">
+    <div style="animation:eccFade .25s ease;">
+      <h1 style="font-size:28px;font-weight:650;margin:0 0 6px;letter-spacing:-0.3px;">Agentes</h1>
+      <p style="color:var(--text-dim);font-size:14.5px;margin:0 0 20px;max-width:760px;">Os {{ counts.agents }} subagentes em <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">agents/</code>. Acionados por comandos ou automaticamente pelo modelo quando a descrição casa com a tarefa.</p>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px;position:sticky;top:58px;background:var(--bg);padding:10px 0;z-index:10;">
+        <div style="flex:1;min-width:220px;position:relative;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;left:11px;top:50%;transform:translateY(-50%);opacity:0.45;"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" placeholder="Buscar agente (ex: python, security, architect)..." value="{{ qAgent }}" onChange="{{ setQAgent }}" style="width:100%;background:var(--bg-elev);border:1px solid var(--border);color:var(--text);padding:10px 14px 10px 34px;border-radius:6px;font-size:14px;box-sizing:border-box;" />
+        </div>
+        <div style="font-family:var(--mono);font-size:12.5px;color:var(--text-faint);background:var(--bg-elev);border:1px solid var(--border);padding:8px 12px;border-radius:6px;white-space:nowrap;">{{ counts.agentsFiltered }} de {{ counts.agents }}</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
+        <sc-for list="{{ agentCatChips }}" as="c" hint-placeholder-count="7">
+          <span style="{{ c.chipStyle }}" onClick="{{ c.select }}">{{ c.label }}</span>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <sc-for list="{{ filteredAgents }}" as="a" hint-placeholder-count="10">
+          <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:6px;padding:13px 16px;">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px;">
+              <span style="font-family:var(--mono);font-size:14px;color:var(--accent);font-weight:600;">{{ a.slug }}</span>
+              <span style="font-size:10.5px;color:var(--text-faint);border:1px solid var(--border);border-radius:4px;padding:1px 7px;text-transform:uppercase;letter-spacing:0.4px;">{{ a.cat }}</span>
+              <span style="font-size:11px;color:var(--text-faint);font-family:var(--mono);">model: {{ a.model }}</span>
+            </div>
+            <div style="font-size:13.6px;color:#c2c1be;">{{ a.desc }}</div>
+            <div style="font-size:11px;color:var(--text-faint);font-family:var(--mono);margin-top:6px;">tools: {{ a.tools }}</div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ agentsEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="color:var(--text-faint);padding:40px 0;text-align:center;font-size:14px;">Nenhum agente encontrado.</div>
+        </sc-if>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ===================== SKILLS ===================== -->
+    <sc-if value="{{ isSkills }}" hint-placeholder-val="{{ false }}">
+    <div style="animation:eccFade .25s ease;">
+      <h1 style="font-size:28px;font-weight:650;margin:0 0 6px;letter-spacing:-0.3px;">Skills</h1>
+      <p style="color:var(--text-dim);font-size:14.5px;margin:0 0 20px;max-width:760px;">As {{ counts.skills }} skills em <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">skills/*/SKILL.md</code>, carregadas sob demanda. Categorias são uma classificação aproximada para facilitar a busca.</p>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px;position:sticky;top:58px;background:var(--bg);padding:10px 0;z-index:10;">
+        <div style="flex:1;min-width:220px;position:relative;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;left:11px;top:50%;transform:translateY(-50%);opacity:0.45;"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" placeholder="Buscar skill (ex: docker, tdd, django)..." value="{{ qSkill }}" onChange="{{ setQSkill }}" style="width:100%;background:var(--bg-elev);border:1px solid var(--border);color:var(--text);padding:10px 14px 10px 34px;border-radius:6px;font-size:14px;box-sizing:border-box;" />
+        </div>
+        <div style="font-family:var(--mono);font-size:12.5px;color:var(--text-faint);background:var(--bg-elev);border:1px solid var(--border);padding:8px 12px;border-radius:6px;white-space:nowrap;">{{ counts.skillsFiltered }} de {{ counts.skills }}</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">
+        <sc-for list="{{ skillCatChips }}" as="c" hint-placeholder-count="18">
+          <span style="{{ c.chipStyle }}" onClick="{{ c.select }}">{{ c.label }}</span>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <sc-for list="{{ filteredSkills }}" as="s" hint-placeholder-count="14">
+          <div style="background:var(--bg-elev);border:1px solid var(--border);border-radius:6px;padding:13px 16px;">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px;">
+              <span style="font-family:var(--mono);font-size:14px;color:var(--accent);font-weight:600;">{{ s.slug }}</span>
+              <span style="font-size:10.5px;color:var(--text-faint);border:1px solid var(--border);border-radius:4px;padding:1px 7px;text-transform:uppercase;letter-spacing:0.4px;">{{ s.cat }}</span>
+            </div>
+            <div style="font-size:13.6px;color:#c2c1be;">{{ s.desc }}</div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ skillsEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="color:var(--text-faint);padding:40px 0;text-align:center;font-size:14px;">Nenhuma skill encontrada.</div>
+        </sc-if>
+      </div>
+    </div>
+    </sc-if>
+
+  </main>
+
+  <footer style="max-width:1240px;margin:0 auto;padding:30px 24px 60px;color:var(--text-faint);font-size:12.5px;border-top:1px solid var(--border-soft);margin-top:20px;">
+    Guia gerado a partir do repositório <a href="https://github.com/affaan-m/ECC" target="_blank" style="color:var(--accent);">affaan-m/ECC</a>, plugin <code style="font-family:var(--mono);font-size:0.88em;background:var(--bg-elev2);border:1px solid var(--border-soft);padding:1.5px 6px;border-radius:4px;color:#f0c9a8;">ecc@ecc</code>. Referência não oficial, feita para uso pessoal.
+  </footer>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultTab&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;inicio&quot;,&quot;options&quot;:[&quot;inicio&quot;,&quot;config&quot;,&quot;comandos&quot;,&quot;agentes&quot;,&quot;skills&quot;],&quot;tsType&quot;:&quot;string&quot;},&quot;defaultInstallHarness&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;claude&quot;,&quot;options&quot;:[&quot;claude&quot;,&quot;codex&quot;,&quot;cursor&quot;,&quot;opencode&quot;,&quot;copilot&quot;,&quot;others&quot;],&quot;tsType&quot;:&quot;string&quot;}}">
+
+class Component extends DCLogic {
+  state = {
+    tab: (this.props.defaultTab) || 'inicio',
+    configSub: 'install',
+    installHarness: (this.props.defaultInstallHarness) || 'claude',
+    qCmd: '', qAgent: '', qSkill: '',
+    catCmd: null, catAgent: null, catSkill: null
+  };
+
+  getData() {
+    const d = (typeof window !== 'undefined' && window.ECC_DATA) || {};
+    return { commands: d.commands || [], agents: d.agents || [], skills: d.skills || [] };
+  }
+
+  catCounts(items) {
+    const counts = {};
+    items.forEach(i => { counts[i.cat] = (counts[i.cat] || 0) + 1; });
+    return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  }
+
+  buildChips(items, activeCat, onSelect) {
+    const cats = this.catCounts(items);
+    const style = (active) => ({
+      fontSize: '12.5px', padding: '5px 11px', borderRadius: '5px', cursor: 'pointer', userSelect: 'none',
+      border: '1px solid ' + (active ? 'var(--accent-border)' : 'var(--border)'),
+      background: active ? 'var(--accent-soft)' : 'var(--bg-elev)',
+      color: active ? 'var(--accent)' : 'var(--text-dim)'
+    });
+    const chips = [{ label: 'Todas (' + items.length + ')', chipStyle: style(activeCat === null), select: () => onSelect(null) }];
+    cats.forEach(([cat, count]) => {
+      chips.push({ label: cat + ' (' + count + ')', chipStyle: style(activeCat === cat), select: () => onSelect(cat) });
+    });
+    return chips;
+  }
+
+  filterItems(items, q, cat) {
+    const query = (q || '').toLowerCase();
+    let out = items.filter(i => !query || i.slug.toLowerCase().includes(query) || (i.desc || '').toLowerCase().includes(query));
+    if (cat) out = out.filter(i => i.cat === cat);
+    return out;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const data = this.getData();
+
+    const filteredCommands = this.filterItems(data.commands, s.qCmd, s.catCmd).map(c => ({ ...c, hasArg: !!c.arg }));
+    const filteredAgents = this.filterItems(data.agents, s.qAgent, s.catAgent);
+    const filteredSkills = this.filterItems(data.skills, s.qSkill, s.catSkill);
+
+    const navBase = { fontFamily: 'inherit', border: '1px solid transparent', fontSize: '13.5px', padding: '7px 14px', borderRadius: '6px', cursor: 'pointer', transition: 'all .15s ease', background: 'transparent', color: 'var(--text-dim)' };
+    const navActive = { ...navBase, color: 'var(--accent)', background: 'var(--accent-soft)', borderColor: 'var(--accent-border)' };
+    const navBtnStyle = {
+      inicio: s.tab === 'inicio' ? navActive : navBase,
+      config: s.tab === 'config' ? navActive : navBase,
+      comandos: s.tab === 'comandos' ? navActive : navBase,
+      agentes: s.tab === 'agentes' ? navActive : navBase,
+      skills: s.tab === 'skills' ? navActive : navBase
+    };
+
+    const subBase = { fontFamily: 'inherit', border: 'none', fontSize: '13.5px', padding: '8px 16px', borderRadius: '6px', cursor: 'pointer', background: 'transparent', color: 'var(--text-dim)' };
+    const subActive = { ...subBase, color: '#0b0b0d', background: 'var(--accent)', fontWeight: '600' };
+    const subTabStyle = {
+      install: s.configSub === 'install' ? subActive : subBase,
+      post: s.configSub === 'post' ? subActive : subBase,
+      separado: s.configSub === 'separado' ? subActive : subBase
+    };
+
+    const harnessDefs = [
+      { id: 'claude', label: 'Claude Code' }, { id: 'codex', label: 'Codex' },
+      { id: 'cursor', label: 'Cursor' }, { id: 'opencode', label: 'OpenCode' },
+      { id: 'copilot', label: 'Copilot & Zed' }, { id: 'others', label: 'Outros harnesses' }
+    ];
+    const chipStyleH = (active) => ({
+      fontSize: '13px', padding: '7px 14px', borderRadius: '6px', cursor: 'pointer', userSelect: 'none',
+      border: '1px solid ' + (active ? 'var(--accent-border)' : 'var(--border)'),
+      background: active ? 'var(--accent-soft)' : 'var(--bg-elev)',
+      color: active ? 'var(--accent)' : 'var(--text-dim)'
+    });
+    const harnesses = harnessDefs.map(h => ({
+      label: h.label, chipStyle: chipStyleH(s.installHarness === h.id),
+      select: () => this.setState({ installHarness: h.id })
+    }));
+
+    return {
+      isInicio: s.tab === 'inicio', isConfig: s.tab === 'config', isComandos: s.tab === 'comandos',
+      isAgentes: s.tab === 'agentes', isSkills: s.tab === 'skills',
+      goInicio: () => this.setState({ tab: 'inicio' }),
+      goConfig: () => this.setState({ tab: 'config' }),
+      goComandos: () => this.setState({ tab: 'comandos' }),
+      goAgentes: () => this.setState({ tab: 'agentes' }),
+      goSkills: () => this.setState({ tab: 'skills' }),
+      navBtnStyle,
+      navBtnHover: { color: 'var(--text)', background: 'var(--bg-elev2)' },
+
+      subTabStyle,
+      isInstallSub: s.configSub === 'install', isPostSub: s.configSub === 'post', isSeparadoSub: s.configSub === 'separado',
+      goInstall: () => this.setState({ configSub: 'install' }),
+      goPost: () => this.setState({ configSub: 'post' }),
+      goSeparado: () => this.setState({ configSub: 'separado' }),
+      harnesses,
+      isHarnessClaude: s.installHarness === 'claude', isHarnessCodex: s.installHarness === 'codex',
+      isHarnessCursor: s.installHarness === 'cursor', isHarnessOpencode: s.installHarness === 'opencode',
+      isHarnessCopilot: s.installHarness === 'copilot', isHarnessOthers: s.installHarness === 'others',
+
+      qCmd: s.qCmd, qAgent: s.qAgent, qSkill: s.qSkill,
+      setQCmd: (e) => this.setState({ qCmd: e.target.value }),
+      setQAgent: (e) => this.setState({ qAgent: e.target.value }),
+      setQSkill: (e) => this.setState({ qSkill: e.target.value }),
+
+      cmdCatChips: this.buildChips(data.commands, s.catCmd, (c) => this.setState({ catCmd: c })),
+      agentCatChips: this.buildChips(data.agents, s.catAgent, (c) => this.setState({ catAgent: c })),
+      skillCatChips: this.buildChips(data.skills, s.catSkill, (c) => this.setState({ catSkill: c })),
+
+      filteredCommands, filteredAgents, filteredSkills,
+      commandsEmpty: filteredCommands.length === 0, agentsEmpty: filteredAgents.length === 0, skillsEmpty: filteredSkills.length === 0,
+
+      counts: {
+        commands: data.commands.length, agents: data.agents.length, skills: data.skills.length,
+        commandsFiltered: filteredCommands.length, agentsFiltered: filteredAgents.length, skillsFiltered: filteredSkills.length
+      }
+    };
+  }
+}
+
+</script>
+</body>
+</html>
